@@ -1,0 +1,287 @@
+{
+  "entities": {
+    "User": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "User",
+      "type": "object",
+      "description": "Represents a user profile in the system.",
+      "properties": {
+        "id": { "type": "string", "description": "Unique identifier for the user, typically the Firebase Auth UID." },
+        "email": { "type": "string", "format": "email", "description": "User's email address." },
+        "displayName": { "type": "string", "description": "User's display name." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Timestamp when the user account was created." }
+      },
+      "required": ["id", "email", "createdAt"]
+    },
+    "WarehouseGb": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "WarehouseGb",
+      "type": "object",
+      "description": "Represents the inventory of green beans stored in the warehouse.",
+      "properties": {
+        "id": { "type": "string", "description": "Unique identifier for the warehouse green beans entry." },
+        "Nama_Green_Beans": { "type": "string", "description": "Name of the green beans variety." },
+        "Stock_Kg": { "type": "number", "description": "Current stock of the green beans in kilograms." },
+        "Avg_HPP": { "type": "number", "description": "Average cost per kilogram of the green beans." },
+        "Total_Value": { "type": "number", "description": "Total value of the green beans stock." },
+        "Last_Update": { "type": "string", "description": "Date of the last stock update.", "format": "date-time" },
+        "PurchaseInvoiceId": { "type": "string", "description": "Reference to PurchaseInvoice. (Relationship: PurchaseInvoice 1:N WarehouseGb)" }
+      },
+      "required": ["id", "Nama_Green_Beans", "Stock_Kg", "Avg_HPP", "Total_Value", "Last_Update"]
+    },
+    "RoastingBatch": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "RoastingBatch",
+      "type": "object",
+      "description": "Represents a single roasting batch with its details.",
+      "properties": {
+        "id": { "type": "string", "description": "Unique identifier for the roasting batch." },
+        "Batch_ID": { "type": "string", "description": "Identifier for the batch roasting." },
+        "Tanggal": { "type": "string", "description": "Date of the roasting process.", "format": "date-time" },
+        "Green_Beans": { "type": "string", "description": "Name of the green beans used in the roasting batch." },
+        "Input_Kg": { "type": "number", "description": "Input quantity of green beans in kilograms." },
+        "Output_Kg": { "type": "number", "description": "Output quantity of roasted beans in kilograms." },
+        "Profile": { "type": "string", "description": "Roasting profile used (e.g., Light, Medium, Dark)." },
+        "Yield_Persen": { "type": "number", "description": "Yield percentage of the roasting process." },
+        "HPP_Per_Kg": { "type": "number", "description": "Cost per kilogram of the roasted beans." },
+        "Harga_Jual_Kg": { "type": "number", "description": "Selling price per kilogram of the roasted beans." },
+        "Status": { "type": "string", "description": "Status of the roasting batch (e.g., Completed, In Progress)." }
+      },
+      "required": ["id", "Batch_ID", "Tanggal", "Green_Beans", "Input_Kg", "Output_Kg", "Profile", "Yield_Persen", "HPP_Per_Kg", "Harga_Jual_Kg", "Status"]
+    },
+    "InventoryRoasted": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "InventoryRoasted",
+      "type": "object",
+      "description": "Represents the inventory of roasted beans.",
+      "properties": {
+        "id": { "type": "string", "description": "Unique identifier for the roasted inventory entry." },
+        "Produk_Roasting": { "type": "string", "description": "Name of the roasted product." },
+        "Stock_Kg": { "type": "number", "description": "Current stock of the roasted product in kilograms." },
+        "HPP_Per_Kg": { "type": "number", "description": "Cost per kilogram of the roasted product." },
+        "Harga_Jual_Kg": { "type": "number", "description": "Selling price per kilogram of the roasted product." },
+        "Total_Value": { "type": "number", "description": "Total value of the roasted product stock." },
+        "RoastingBatchId": { "type": "string", "description": "Reference to RoastingBatch. (Relationship: RoastingBatch 1:N InventoryRoasted)" }
+      },
+      "required": ["id", "Produk_Roasting", "Stock_Kg", "HPP_Per_Kg", "Harga_Jual_Kg", "Total_Value"]
+    },
+    "InventoryStore": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "InventoryStore",
+      "type": "object",
+      "description": "Represents the inventory of products in the store.",
+      "properties": {
+        "id": { "type": "string", "description": "Unique identifier for the store inventory entry." },
+        "Nama_Produk": { "type": "string", "description": "Name of the product in the store." },
+        "Kategori": { "type": "string", "description": "Category of the product (e.g., Coffee Beans, Merchandise)." },
+        "Stock_Kg": { "type": "number", "description": "Current stock of the product in kilograms." },
+        "HPP_Per_Kg": { "type": "number", "description": "Cost per kilogram of the product." },
+        "Harga_Jual_Kg": { "type": "number", "description": "Selling price per kilogram of the product." },
+        "Total_Value": { "type": "number", "description": "Total value of the product stock in the store." },
+        "InventoryRoastedId": { "type": "string", "description": "Reference to InventoryRoasted. (Relationship: InventoryRoasted 1:N InventoryStore)" }
+      },
+      "required": ["id", "Nama_Produk", "Kategori", "Stock_Kg", "HPP_Per_Kg", "Harga_Jual_Kg", "Total_Value"]
+    },
+    "SalesInvoice": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "SalesInvoice",
+      "type": "object",
+      "description": "Represents a sales invoice.",
+      "properties": {
+        "id": { "type": "string", "description": "Unique identifier for the sales invoice." },
+        "No_Invoice": { "type": "string", "description": "Invoice number." },
+        "Customer": { "type": "string", "description": "Name of the customer." },
+        "Tanggal": { "type": "string", "description": "Invoice date.", "format": "date-time" },
+        "Jatuh_Tempo": { "type": "string", "description": "Due date for the invoice.", "format": "date-time" },
+        "Total_Invoice": { "type": "number", "description": "Total amount of the invoice." },
+        "Status_Bayar": { "type": "string", "description": "Payment status of the invoice (e.g., Draft, Sent, Paid)." }
+      },
+      "required": ["id", "No_Invoice", "Customer", "Tanggal", "Jatuh_Tempo", "Total_Invoice", "Status_Bayar"]
+    },
+    "Transaction": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Transaction",
+      "type": "object",
+      "description": "Represents a financial transaction.",
+      "properties": {
+        "id": { "type": "string", "description": "Unique identifier for the transaction." },
+        "Tanggal": { "type": "string", "description": "Date of the transaction.", "format": "date-time" },
+        "Deskripsi": { "type": "string", "description": "Description of the transaction." },
+        "Referensi": { "type": "string", "description": "Reference to related document or entity (e.g., Invoice number)." },
+        "Kategori": { "type": "string", "description": "Category of the transaction (e.g., Sales, Purchase)." },
+        "Debit": { "type": "number", "description": "Debit amount of the transaction." },
+        "Kredit": { "type": "number", "description": "Credit amount of the transaction." }
+      },
+      "required": ["id", "Tanggal", "Deskripsi", "Referensi", "Kategori", "Debit", "Kredit"]
+    },
+    "Asset": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Asset",
+      "type": "object",
+      "description": "Represents a company asset.",
+      "properties": {
+        "id": { "type": "string", "description": "Unique identifier for the asset." },
+        "Nama_Aset": { "type": "string", "description": "Name of the asset." },
+        "Kategori": { "type": "string", "description": "Category of the asset (e.g., Fixed, Current)." },
+        "Tgl_Perolehan": { "type": "string", "description": "Acquisition date of the asset.", "format": "date-time" },
+        "Nilai_Perolehan": { "type": "number", "description": "Original value of the asset." },
+        "Penyusutan_Tahun": { "type": "number", "description": "Annual depreciation amount of the asset." },
+        "Nilai_Buku": { "type": "number", "description": "Book value of the asset (original value - accumulated depreciation)." }
+      },
+      "required": ["id", "Nama_Aset", "Kategori", "Tgl_Perolehan", "Nilai_Perolehan", "Penyusutan_Tahun", "Nilai_Buku"]
+    },
+    "PurchaseInvoice": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "PurchaseInvoice",
+      "type": "object",
+      "description": "Represents a purchase invoice from a supplier.",
+      "properties": {
+        "id": { "type": "string", "description": "Unique identifier for the purchase invoice." },
+        "No_Faktur": { "type": "string", "description": "Invoice number from the supplier." },
+        "Supplier": { "type": "string", "description": "Name of the supplier." },
+        "Tanggal": { "type": "string", "description": "Date of the invoice.", "format": "date-time" },
+        "Total_Faktur": { "type": "number", "description": "Total amount of the invoice." },
+        "Status": { "type": "string", "description": "Status of the invoice (e.g., Draft, Received, Paid)." }
+      },
+      "required": ["id", "No_Faktur", "Supplier", "Tanggal", "Total_Faktur", "Status"]
+    },
+    "Setting": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Setting",
+      "type": "object",
+      "description": "Represents application settings and configurations.",
+      "properties": {
+        "id": { "type": "string", "description": "Unique identifier for the setting." },
+        "company_name": { "type": "string", "description": "Name of the company." },
+        "company_npwp": { "type": "string", "description": "Company's tax identification number (NPWP)." },
+        "company_address": { "type": "string", "description": "Company's address." },
+        "modal_awal": { "type": "number", "description": "Initial capital amount." },
+        "company_ppn_rate": { "type": "number", "description": "Value Added Tax (VAT) rate." },
+        "stock_low_limit": { "type": "number", "description": "Threshold for low stock alerts." }
+      },
+      "required": ["id"]
+    }
+  },
+  "auth": {
+    "providers": ["password", "anonymous"]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/users/{userId}",
+        "definition": {
+          "entityName": "User",
+          "schema": { "$ref": "#/entities/User" },
+          "description": "Stores user profile information.",
+          "params": [{ "name": "userId", "description": "The user's Firebase Authentication UID." }]
+        }
+      },
+      {
+        "path": "/settings/{settingId}",
+        "definition": {
+          "entityName": "Setting",
+          "schema": { "$ref": "#/entities/Setting" },
+          "description": "Stores application settings. All authenticated users can read.",
+          "params": [{ "name": "settingId", "description": "Unique identifier for the setting document." }]
+        }
+      },
+      {
+        "path": "/users/{userId}/purchase_invoices/{purchaseInvoiceId}",
+        "definition": {
+          "entityName": "PurchaseInvoice",
+          "schema": { "$ref": "#/entities/PurchaseInvoice" },
+          "description": "Stores user-specific purchase invoices.",
+          "params": [
+            { "name": "userId", "description": "The user's Firebase Authentication UID." },
+            { "name": "purchaseInvoiceId", "description": "Unique identifier for the purchase invoice." }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/warehouse_gb/{warehouseGbId}",
+        "definition": {
+          "entityName": "WarehouseGb",
+          "schema": { "$ref": "#/entities/WarehouseGb" },
+          "description": "Stores user-specific green bean inventory.",
+          "params": [
+            { "name": "userId", "description": "The user's Firebase Authentication UID." },
+            { "name": "warehouseGbId", "description": "Unique identifier for the warehouse entry." }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/roasting_batches/{roastingBatchId}",
+        "definition": {
+          "entityName": "RoastingBatch",
+          "schema": { "$ref": "#/entities/RoastingBatch" },
+          "description": "Tracks user-specific roasting processes.",
+          "params": [
+            { "name": "userId", "description": "The user's Firebase Authentication UID." },
+            { "name": "roastingBatchId", "description": "Unique identifier for the roasting batch." }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/inventory_roasted/{inventoryRoastedId}",
+        "definition": {
+          "entityName": "InventoryRoasted",
+          "schema": { "$ref": "#/entities/InventoryRoasted" },
+          "description": "Stores user-specific roasted bean inventory.",
+          "params": [
+            { "name": "userId", "description": "The user's Firebase Authentication UID." },
+            { "name": "inventoryRoastedId", "description": "Unique identifier for the roasted inventory entry." }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/inventory_store/{inventoryStoreId}",
+        "definition": {
+          "entityName": "InventoryStore",
+          "schema": { "$ref": "#/entities/InventoryStore" },
+          "description": "Manages user-specific store inventory.",
+          "params": [
+            { "name": "userId", "description": "The user's Firebase Authentication UID." },
+            { "name": "inventoryStoreId", "description": "Unique identifier for the store inventory entry." }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/sales_invoices/{salesInvoiceId}",
+        "definition": {
+          "entityName": "SalesInvoice",
+          "schema": { "$ref": "#/entities/SalesInvoice" },
+          "description": "Records user-specific sales transactions.",
+          "params": [
+            { "name": "userId", "description": "The user's Firebase Authentication UID." },
+            { "name": "salesInvoiceId", "description": "Unique identifier for the sales invoice." }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/transactions/{transactionId}",
+        "definition": {
+          "entityName": "Transaction",
+          "schema": { "$ref": "#/entities/Transaction" },
+          "description": "Logs all user-specific financial transactions.",
+          "params": [
+            { "name": "userId", "description": "The user's Firebase Authentication UID." },
+            { "name": "transactionId", "description": "Unique identifier for the transaction." }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/assets/{assetId}",
+        "definition": {
+          "entityName": "Asset",
+          "schema": { "$ref": "#/entities/Asset" },
+          "description": "Manages user-specific company assets.",
+          "params": [
+            { "name": "userId", "description": "The user's Firebase Authentication UID." },
+            { "name": "assetId", "description": "Unique identifier for the asset." }
+          ]
+        }
+      }
+    ],
+    "reasoning": "The Firestore structure is redesigned for a multi-tenant application where each user's data is isolated under their own user document. This is achieved by creating a top-level `/users/{userId}` collection and nesting all other data collections within it. This design ensures strong data privacy and security, as rules can be simply applied to ensure a user can only access data under their own `/users/{userId}` path. The `/settings` collection remains at the top level as it contains global application settings readable by all authenticated users."
+  }
+}
